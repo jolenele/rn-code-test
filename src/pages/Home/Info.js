@@ -1,5 +1,6 @@
 import React from 'react';
 import { SafeAreaView, Text, Linking, StyleSheet } from 'react-native';
+import Product from '../../components/Product';
 
 const Info = () => (
   <SafeAreaView>
