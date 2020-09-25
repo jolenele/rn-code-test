@@ -14,10 +14,28 @@ const height = Dimensions.get('screen').height;
 class Product extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      price: 100,
+      discount: true,
+      discountType: 'percentage',
+      discountAmount: 15.5,
+      discountedPrice: 0,
+    };
   }
-
+  componentDidMount = async () => {
+    await this.calculateDiscount();
+  };
+  calculateDiscount = async () => {
+    const { price, discount, discountType, discountAmount } = this.state;
+    if (discount) {
+      if (discountType === 'value') discountedPrice = price - discountAmount;
+      if (discountType === 'percentage')
+        discountedPrice = price - (price * discountAmount) / 100;
+    }
+    this.setState({ discountedPrice: discountedPrice });
+  };
   render() {
+    const { price, discountedPrice, discount } = this.state;
     return (
       <ImageBackground
         style={styles.container}
@@ -26,7 +44,23 @@ class Product extends Component {
         <View style={styles.info_bar}>
           <View style={styles.infor_column}>
             <Text style={styles.title}>Title</Text>
-            <Text style={styles.text}>Price</Text>
+            {discount ? (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <Text style={styles.text_discount}>
+                  {discountedPrice === 0 ? 'Free' : discountedPrice.toFixed(2)}
+                </Text>
+                <Text style={styles.text_original}>{price.toFixed(2)}</Text>
+              </View>
+            ) : (
+              <Text style={styles.text}>
+                {price === 0 ? 'Free' : price.toFixed(2)}
+              </Text>
+            )}
+
             <Text style={styles.description}>Description</Text>
           </View>
           <Image source={AVARTAR} style={styles.image_avatar} />
@@ -65,9 +99,27 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: 'white',
   },
+  text_discount: {
+    fontSize: 20,
+    fontWeight: '600',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#f5f5dc',
+    backgroundColor: '#f5f5dc',
+    color: 'red',
+    overflow: 'hidden',
+  },
+  text_original: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'lightgrey',
+    textDecorationLine: 'line-through',
+    fontStyle: 'italic',
+    marginLeft: 10,
+  },
   description: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '400',
     color: 'white',
   },
   image_avatar: {

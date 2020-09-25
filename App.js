@@ -4,7 +4,6 @@ import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import Home from './src/pages/Home';
 import Product from './src/components/Product';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const App = () => (
   <NavigationContainer>
